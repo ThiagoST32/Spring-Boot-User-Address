@@ -4,8 +4,8 @@ import dio.spring.projeto.spring.user.and.address.dto.AddressDTO;
 import dio.spring.projeto.spring.user.and.address.dto.UserDTO;
 import jakarta.persistence.*;
 
-@Entity(name = "user")
-@Table(name = "user")
+@Entity(name = "tab_user")
+@Table(name = "tab_user")
 public class User {
 
     @Id
@@ -21,10 +21,10 @@ public class User {
     @Column(name = "email", nullable = false)
     private String email;
 
-    @Column(name = "telefone", nullable = false)
+    @Column(name = "telefone", nullable = false, length = 11, unique = true)
     private String telefone;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL, optional = false)
     @JoinColumn(name = "id_address", referencedColumnName = "id")
     private Address address;
 
@@ -37,6 +37,14 @@ public class User {
         this.email = userDTO.email();
         this.telefone = userDTO.telefone();
         AddressDTO addressDTO = userDTO.address();
+        this.address = new Address(
+          addressDTO.rua(),
+          addressDTO.numero(),
+          addressDTO.bairro(),
+          addressDTO.cep(),
+          addressDTO.cidade(),
+          addressDTO.estado()
+        );
 
     }
 

@@ -22,13 +22,13 @@ public class Address {
     @Column(name = "bairro", nullable = false)
     private String bairro;
 
-    @Column(name = "cep", nullable = false)
+    @Column(name = "cep", nullable = false, length = 8)
     private String cep;
 
     @Column(name = "cidade", nullable = false)
     private String cidade;
 
-    @Column(name = "estado", nullable = false)
+    @Column(name = "estado", nullable = false, length = 2)
     private String estado;
 
     @OneToMany(mappedBy = "address")
