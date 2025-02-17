@@ -24,8 +24,8 @@ public class User {
     @Column(name = "telefone", nullable = false)
     private String telefone;
 
-    @Column(name = "id_address", nullable = false)
     @ManyToOne
+    @JoinColumn(name = "id_address", referencedColumnName = "id")
     private Address address;
 
     public User() {
@@ -36,6 +36,8 @@ public class User {
         this.sobrenome = userDTO.sobrenome();
         this.email = userDTO.email();
         this.telefone = userDTO.telefone();
+        AddressDTO addressDTO = userDTO.address();
+
     }
 
 
