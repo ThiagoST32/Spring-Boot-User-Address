@@ -1,5 +1,7 @@
 package dio.spring.projeto.spring.user.and.address.domain;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import dio.spring.projeto.spring.user.and.address.dto.AddressDTO;
 import jakarta.persistence.*;
 
@@ -54,6 +56,14 @@ public class Address {
         this.cep = addressDTO.cep();
         this.cidade = addressDTO.cidade();
         this.estado = addressDTO.estado();
+    }
+
+    public Address(String cep) {
+    }
+
+    public static Address fromJsonCepReceiver(String cepJson) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.readValue(cepJson, Address.class);
     }
 
     public int getId() {

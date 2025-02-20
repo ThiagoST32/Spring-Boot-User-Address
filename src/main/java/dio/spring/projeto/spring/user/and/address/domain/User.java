@@ -31,12 +31,12 @@ public class User {
     public User() {
     }
 
-    public User(UserDTO userDTO){
+    public User(UserDTO userDTO, Address address){
         this.nome = userDTO.nome();
         this.sobrenome = userDTO.sobrenome();
         this.email = userDTO.email();
         this.telefone = userDTO.telefone();
-        AddressDTO addressDTO = userDTO.address();
+        Address addressDTO = address;
         this.address = new Address(
           addressDTO.rua(),
           addressDTO.numero(),
