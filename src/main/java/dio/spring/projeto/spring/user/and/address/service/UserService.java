@@ -5,6 +5,10 @@ import dio.spring.projeto.spring.user.and.address.domain.Address;
 import dio.spring.projeto.spring.user.and.address.domain.User;
 import dio.spring.projeto.spring.user.and.address.dto.UserDTO;
 import dio.spring.projeto.spring.user.and.address.dto.updateDTO.UpdateUserDTO;
+import dio.spring.projeto.spring.user.and.address.exceptions.Runtimes.notfound.CepNotFoundException;
+import dio.spring.projeto.spring.user.and.address.exceptions.Runtimes.invalidFormat.InvalidEmailException;
+import dio.spring.projeto.spring.user.and.address.exceptions.Runtimes.invalidFormat.InvalidFormatPhoneException;
+import dio.spring.projeto.spring.user.and.address.exceptions.Runtimes.notfound.UserNotFoundException;
 import dio.spring.projeto.spring.user.and.address.repository.AddressRepository;
 import dio.spring.projeto.spring.user.and.address.repository.UserRepository;
 import dio.spring.projeto.spring.user.and.address.service.cepService.CepService;
@@ -33,7 +37,7 @@ public class UserService {
         return newUser;
     }
 
-    public Address getAddressByCep(UserDTO userDTO) throws JsonProcessingException {
+    public Address getAddressByCep(UserDTO userDTO) throws CepNotFoundException, JsonProcessingException {
         Address address = this.cepService.buscarEnderecoPorCep(userDTO.cep());
         address.setNumero(userDTO.numero());
         return address;
@@ -44,11 +48,11 @@ public class UserService {
     }
 
     public User getUserById(int id){
-        return this.userRepository.findById(id).orElseThrow( () -> new RuntimeException("User not Found!!"));
+        return this.userRepository.findById(id).orElseThrow(UserNotFoundException::new);
     }
 
     @Transactional
-    public Optional<User> updateUserInfo(int id, UpdateUserDTO updateUserDTO) throws JsonProcessingException {
+    public Optional<User> updateUserInfo(int id, UpdateUserDTO updateUserDTO) throws JsonProcessingException, InvalidEmailException, InvalidFormatPhoneException {
         User updatedUser = this.getUserById(id);
         if (id == updatedUser.getId()) {
             System.err.println(updateUserDTO);
@@ -78,7 +82,7 @@ public class UserService {
     }
 
     @Transactional
-    public void deleteUserById(int id){
+    public void deleteUserById(int id) throws UserNotFoundException{
         this.userRepository.deleteById(id);
     }
 }
