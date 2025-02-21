@@ -1,6 +1,5 @@
 package dio.spring.projeto.spring.user.and.address.domain;
 
-import dio.spring.projeto.spring.user.and.address.dto.AddressDTO;
 import dio.spring.projeto.spring.user.and.address.dto.UserDTO;
 import jakarta.persistence.*;
 
@@ -36,14 +35,13 @@ public class User {
         this.sobrenome = userDTO.sobrenome();
         this.email = userDTO.email();
         this.telefone = userDTO.telefone();
-        Address addressDTO = address;
         this.address = new Address(
-          addressDTO.rua(),
-          addressDTO.numero(),
-          addressDTO.bairro(),
-          addressDTO.cep(),
-          addressDTO.cidade(),
-          addressDTO.estado()
+          address.getLogradouro(),
+          address.getNumero(),
+          address.getBairro(),
+          address.getCep(),
+          address.getLocalidade(),
+          address.getUf()
         );
 
     }

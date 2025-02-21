@@ -1,8 +1,5 @@
 package dio.spring.projeto.spring.user.and.address.domain;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import dio.spring.projeto.spring.user.and.address.dto.AddressDTO;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -16,7 +13,7 @@ public class Address {
     private int id;
 
     @Column(name = "rua", nullable = false)
-    private String rua;
+    private String logradouro;
 
     @Column(name = "numero", nullable = false)
     private int numero;
@@ -24,14 +21,14 @@ public class Address {
     @Column(name = "bairro", nullable = false)
     private String bairro;
 
-    @Column(name = "cep", nullable = false, length = 8)
+    @Column(name = "cep", nullable = false, length = 9)
     private String cep;
 
     @Column(name = "cidade", nullable = false)
-    private String cidade;
+    private String localidade;
 
     @Column(name = "estado", nullable = false, length = 2)
-    private String estado;
+    private String uf;
 
     @OneToMany(mappedBy = "address")
     private List<User> users;
@@ -41,29 +38,15 @@ public class Address {
     }
 
     public Address(String rua, int numero, String bairro, String cep, String cidade, String estado) {
-        this.rua = rua;
+        this.logradouro = rua;
         this.numero = numero;
         this.bairro = bairro;
         this.cep = cep;
-        this.cidade = cidade;
-        this.estado = estado;
-    }
-
-    public Address(AddressDTO addressDTO){
-        this.rua = addressDTO.rua();
-        this.numero = addressDTO.numero();
-        this.bairro = addressDTO.bairro();
-        this.cep = addressDTO.cep();
-        this.cidade = addressDTO.cidade();
-        this.estado = addressDTO.estado();
+        this.localidade = cidade;
+        this.uf = estado;
     }
 
     public Address(String cep) {
-    }
-
-    public static Address fromJsonCepReceiver(String cepJson) throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        return objectMapper.readValue(cepJson, Address.class);
     }
 
     public int getId() {
@@ -74,12 +57,12 @@ public class Address {
         this.id = id;
     }
 
-    public String getRua() {
-        return rua;
+    public String getLogradouro() {
+        return logradouro;
     }
 
-    public void setRua(String rua) {
-        this.rua = rua;
+    public void setLogradouro(String logradouro) {
+        this.logradouro = logradouro;
     }
 
     public int getNumero() {
@@ -106,19 +89,33 @@ public class Address {
         this.cep = cep;
     }
 
-    public String getCidade() {
-        return cidade;
+    public String getLocalidade() {
+        return localidade;
     }
 
-    public void setCidade(String cidade) {
-        this.cidade = cidade;
+    public void setLocalidade(String localidade) {
+        this.localidade = localidade;
     }
 
-    public String getEstado() {
-        return estado;
+    public String getUf() {
+        return uf;
     }
 
-    public void setEstado(String estado) {
-        this.estado = estado;
+    public void setUf(String uf) {
+        this.uf = uf;
+    }
+
+    @Override
+    public String toString() {
+        return "Address{" +
+                "id=" + id +
+                ", rua='" + logradouro + '\'' +
+                ", numero=" + numero +
+                ", bairro='" + bairro + '\'' +
+                ", cep='" + cep + '\'' +
+                ", cidade='" + localidade + '\'' +
+                ", estado='" + uf + '\'' +
+                ", users=" + users +
+                '}';
     }
 }
