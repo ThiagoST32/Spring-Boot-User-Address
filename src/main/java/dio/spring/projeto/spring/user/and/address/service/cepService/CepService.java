@@ -4,6 +4,7 @@ package dio.spring.projeto.spring.user.and.address.service.cepService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dio.spring.projeto.spring.user.and.address.domain.Address;
+import dio.spring.projeto.spring.user.and.address.exceptions.Runtimes.notfound.CepNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -23,6 +24,9 @@ public class CepService {
     public Address buscarEnderecoPorCep(String cep) throws JsonProcessingException {
         String url = "https://viacep.com.br/ws/" + cep + "/json/";
         String jsonResponse = restTemplate.getForObject(url, String.class);
+        if (jsonResponse.contains("400 Bad Request on GET request")) {
+            throw new CepNotFoundException();
+        }
         return objectMapper.readValue(jsonResponse, Address.class);
     }
 }
