@@ -36,7 +36,7 @@ public class UserService {
     private CepService cepService;
 
 
-    public User saveUser(UserDTO userDTO) throws JsonProcessingException, EmailExistException {
+    public User saveUser(UserDTO userDTO){
         User newUser = null;
         this.validadorUsuarioInfo(userDTO);
         newUser = new User(userDTO, getAddressByCep(userDTO));
@@ -44,7 +44,7 @@ public class UserService {
         return newUser;
     }
 
-    public Address getAddressByCep(UserDTO userDTO) throws CepNotFoundException, JsonProcessingException {
+    public Address getAddressByCep(UserDTO userDTO){
         Address address = this.cepService.buscarEnderecoPorCep(userDTO.cep());
         address.setNumero(userDTO.numero());
         return address;
