@@ -1,13 +1,12 @@
-package dio.spring.projeto.spring.user.and.address.exceptions;
+package dio.spring.projeto.spring.user.and.address.infra;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import dio.spring.projeto.spring.user.and.address.exceptions.Runtimes.exist.PhoneExistException;
-import dio.spring.projeto.spring.user.and.address.exceptions.Runtimes.invalidFormat.InvalidEmailException;
-import dio.spring.projeto.spring.user.and.address.exceptions.Runtimes.invalidFormat.InvalidFormatPhoneException;
-import dio.spring.projeto.spring.user.and.address.exceptions.Runtimes.invalidFormat.InvalidNumberCepException;
-import dio.spring.projeto.spring.user.and.address.exceptions.Runtimes.notfound.CepNotFoundException;
-import dio.spring.projeto.spring.user.and.address.exceptions.Runtimes.exist.EmailExistException;
-import dio.spring.projeto.spring.user.and.address.exceptions.Runtimes.notfound.UserNotFoundException;
+import dio.spring.projeto.spring.user.and.address.exceptions.exist.PhoneExistException;
+import dio.spring.projeto.spring.user.and.address.exceptions.invalidFormat.InvalidEmailException;
+import dio.spring.projeto.spring.user.and.address.exceptions.invalidFormat.InvalidFormatPhoneException;
+import dio.spring.projeto.spring.user.and.address.exceptions.invalidFormat.InvalidNumberCepException;
+import dio.spring.projeto.spring.user.and.address.exceptions.notfound.CepNotFoundException;
+import dio.spring.projeto.spring.user.and.address.exceptions.exist.EmailExistException;
+import dio.spring.projeto.spring.user.and.address.exceptions.notfound.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

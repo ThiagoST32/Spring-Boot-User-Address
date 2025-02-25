@@ -1,4 +1,4 @@
-package dio.spring.projeto.spring.user.and.address.exceptions;
+package dio.spring.projeto.spring.user.and.address.infra;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
