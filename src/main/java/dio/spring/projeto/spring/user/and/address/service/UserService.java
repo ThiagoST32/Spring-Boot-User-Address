@@ -5,10 +5,13 @@ import dio.spring.projeto.spring.user.and.address.domain.Address;
 import dio.spring.projeto.spring.user.and.address.domain.User;
 import dio.spring.projeto.spring.user.and.address.dto.UserDTO;
 import dio.spring.projeto.spring.user.and.address.dto.updateDTO.UpdateUserDTO;
-import dio.spring.projeto.spring.user.and.address.exceptions.Runtimes.notfound.CepNotFoundException;
-import dio.spring.projeto.spring.user.and.address.exceptions.Runtimes.invalidFormat.InvalidEmailException;
-import dio.spring.projeto.spring.user.and.address.exceptions.Runtimes.invalidFormat.InvalidFormatPhoneException;
-import dio.spring.projeto.spring.user.and.address.exceptions.Runtimes.notfound.UserNotFoundException;
+import dio.spring.projeto.spring.user.and.address.exceptions.exist.EmailExistException;
+import dio.spring.projeto.spring.user.and.address.exceptions.exist.NameExistException;
+import dio.spring.projeto.spring.user.and.address.exceptions.exist.PhoneExistException;
+import dio.spring.projeto.spring.user.and.address.exceptions.notfound.CepNotFoundException;
+import dio.spring.projeto.spring.user.and.address.exceptions.invalidFormat.InvalidEmailException;
+import dio.spring.projeto.spring.user.and.address.exceptions.invalidFormat.InvalidFormatPhoneException;
+import dio.spring.projeto.spring.user.and.address.exceptions.notfound.UserNotFoundException;
 import dio.spring.projeto.spring.user.and.address.repository.AddressRepository;
 import dio.spring.projeto.spring.user.and.address.repository.UserRepository;
 import dio.spring.projeto.spring.user.and.address.service.cepService.CepService;
@@ -18,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 @Service
 public class UserService {
@@ -31,8 +35,11 @@ public class UserService {
     @Autowired
     private CepService cepService;
 
-    public User saveUser(UserDTO userDTO) throws JsonProcessingException {
-        User newUser = new User(userDTO, getAddressByCep(userDTO));
+
+    public User saveUser(UserDTO userDTO) throws JsonProcessingException, EmailExistException {
+        User newUser = null;
+        this.validadorUsuarioInfo(userDTO);
+        newUser = new User(userDTO, getAddressByCep(userDTO));
         this.userRepository.save(newUser);
         return newUser;
     }
@@ -67,7 +74,7 @@ public class UserService {
     }
 
     @Transactional
-    public Address updateAddressUser(User user,int id, String cep, int numero) throws JsonProcessingException {
+    public Address updateAddressUser(User user,int id, String cep, int numero) throws JsonProcessingException, CepNotFoundException {
         Address updatedAddress = user.getAddress();
         Address newAddressInfo = this.cepService.buscarEnderecoPorCep(cep);
         if (id == user.getId()){
@@ -85,4 +92,35 @@ public class UserService {
     public void deleteUserById(int id) throws UserNotFoundException{
         this.userRepository.deleteById(id);
     }
+
+    public boolean emailInvalido(UserDTO userDTO){
+        String validador = "^(.+)@(\\S+)$";
+        return Pattern.compile(validador).matcher(userDTO.email()).matches();
+    }
+
+    public boolean telefoneInvalido(UserDTO userDTO){
+        String validador = "^(?=[8-9]{1})(?=[0-9]{8}).*";
+        return Pattern.compile(validador).matcher(userDTO.telefone()).matches();
+    }
+
+    public Boolean emailExistente(UserDTO userDTO){
+        return this.userRepository.findByEmail(userDTO.email()).orElseThrow(EmailExistException::new);
+    }
+
+    public boolean phoneExist(UserDTO userDTO){
+        return this.userRepository.findByTelefone(userDTO.telefone()).orElseThrow(PhoneExistException::new);
+    }
+
+    public boolean nameExist(UserDTO userDTO) {
+        return this.userRepository.findByNome(userDTO.nome()).orElseThrow(NameExistException::new);
+    }
+
+    public void validadorUsuarioInfo(UserDTO userDTO){
+        if (!this.emailInvalido(userDTO)) throw new InvalidEmailException();
+        //if (!this.emailExistente(userDTO));
+        if (!this.telefoneInvalido(userDTO)) throw new InvalidFormatPhoneException();
+        //if (!this.phoneExist(userDTO));
+        //if (!this.nameExist(userDTO));
+    }
+
 }
