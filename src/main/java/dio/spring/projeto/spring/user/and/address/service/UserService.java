@@ -35,16 +35,19 @@ public class UserService {
     @Autowired
     private CepService cepService;
 
+    @Autowired
+    private UserValidator userValidator;
 
-    public User saveUser(UserDTO userDTO){
+
+    public User saveUser(UserDTO userDTO) throws JsonProcessingException {
         User newUser = null;
-        this.validadorUsuarioInfo(userDTO);
+        this.userValidator.validadorUsuarioInfo(userDTO);
         newUser = new User(userDTO, getAddressByCep(userDTO));
         this.userRepository.save(newUser);
         return newUser;
     }
 
-    public Address getAddressByCep(UserDTO userDTO){
+    public Address getAddressByCep(UserDTO userDTO) throws JsonProcessingException {
         Address address = this.cepService.buscarEnderecoPorCep(userDTO.cep());
         address.setNumero(userDTO.numero());
         return address;
@@ -74,7 +77,7 @@ public class UserService {
     }
 
     @Transactional
-    public Address updateAddressUser(User user,int id, String cep, int numero) throws JsonProcessingException, CepNotFoundException {
+    public Address updateAddressUser(User user,int id, String cep, int numero) throws JsonProcessingException {
         Address updatedAddress = user.getAddress();
         Address newAddressInfo = this.cepService.buscarEnderecoPorCep(cep);
         if (id == user.getId()){
@@ -93,34 +96,6 @@ public class UserService {
         this.userRepository.deleteById(id);
     }
 
-    public boolean emailInvalido(UserDTO userDTO){
-        String validador = "^(.+)@(\\S+)$";
-        return Pattern.compile(validador).matcher(userDTO.email()).matches();
-    }
 
-    public boolean telefoneInvalido(UserDTO userDTO){
-        String validador = "^(?=[8-9]{1})(?=[0-9]{8}).*";
-        return Pattern.compile(validador).matcher(userDTO.telefone()).matches();
-    }
-
-    public Boolean emailExistente(UserDTO userDTO){
-        return this.userRepository.findByEmail(userDTO.email()).orElseThrow(EmailExistException::new);
-    }
-
-    public boolean phoneExist(UserDTO userDTO){
-        return this.userRepository.findByTelefone(userDTO.telefone()).orElseThrow(PhoneExistException::new);
-    }
-
-    public boolean nameExist(UserDTO userDTO) {
-        return this.userRepository.findByNome(userDTO.nome()).orElseThrow(NameExistException::new);
-    }
-
-    public void validadorUsuarioInfo(UserDTO userDTO){
-        if (!this.emailInvalido(userDTO)) throw new InvalidEmailException();
-        //if (!this.emailExistente(userDTO));
-        if (!this.telefoneInvalido(userDTO)) throw new InvalidFormatPhoneException();
-        //if (!this.phoneExist(userDTO));
-        //if (!this.nameExist(userDTO));
-    }
 
 }

@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import dio.spring.projeto.spring.user.and.address.domain.User;
 import dio.spring.projeto.spring.user.and.address.dto.UserDTO;
 import dio.spring.projeto.spring.user.and.address.dto.updateDTO.UpdateUserDTO;
-import dio.spring.projeto.spring.user.and.address.exceptions.exist.PhoneExistException;
 import dio.spring.projeto.spring.user.and.address.service.UserService;
 import dio.spring.projeto.spring.user.and.address.service.cepService.CepService;
 import org.springframework.beans.factory.annotation.Autowired;
