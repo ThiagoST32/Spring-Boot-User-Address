@@ -1,12 +1,17 @@
 package dio.spring.projeto.spring.user.and.address.infra;
 
+import dio.spring.projeto.spring.user.and.address.exceptions.emptyOrBlankValues.CepIsEmptyException;
+import dio.spring.projeto.spring.user.and.address.exceptions.exist.NameExistException;
 import dio.spring.projeto.spring.user.and.address.exceptions.exist.PhoneExistException;
+import dio.spring.projeto.spring.user.and.address.exceptions.invalidFormat.InvalidAddressCepException;
 import dio.spring.projeto.spring.user.and.address.exceptions.invalidFormat.InvalidEmailException;
 import dio.spring.projeto.spring.user.and.address.exceptions.invalidFormat.InvalidFormatPhoneException;
 import dio.spring.projeto.spring.user.and.address.exceptions.invalidFormat.InvalidNumberCepException;
 import dio.spring.projeto.spring.user.and.address.exceptions.notfound.CepNotFoundException;
 import dio.spring.projeto.spring.user.and.address.exceptions.exist.EmailExistException;
 import dio.spring.projeto.spring.user.and.address.exceptions.notfound.UserNotFoundException;
+import dio.spring.projeto.spring.user.and.address.exceptions.emptyOrBlankValues.NameIsEmptyException;
+import dio.spring.projeto.spring.user.and.address.exceptions.emptyOrBlankValues.PhoneIsEmptyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -44,7 +49,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(InvalidNumberCepException.class)
-    public ResponseEntity<ApiError> invalidCepException(InvalidNumberCepException cp){
+    public ResponseEntity<ApiError> invalidCepException(InvalidNumberCepException cp) {
         ApiError apiError = ApiError
                 .builder()
                 .timestamp(LocalDateTime.now())
@@ -55,16 +60,28 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(apiError, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(EmailExistException.class)
-    public ResponseEntity<ApiError> emailExistException(EmailExistException ex) {
+    @ExceptionHandler(InvalidAddressCepException.class)
+    public ResponseEntity<ApiError> invalidAddressCepException(InvalidAddressCepException ex) {
         ApiError apiError = ApiError
                 .builder()
                 .timestamp(LocalDateTime.now())
-                .code(HttpStatus.CONFLICT.value())
-                .status(HttpStatus.CONFLICT.name())
+                .code(HttpStatus.BAD_REQUEST.value())
+                .status(HttpStatus.BAD_REQUEST.name())
                 .errors(List.of(ex.getMessage()))
                 .build();
-        return new ResponseEntity<>(apiError, HttpStatus.CONFLICT);
+        return new ResponseEntity<>(apiError, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(CepIsEmptyException.class)
+    public ResponseEntity<ApiError> invalidCepEmpty(CepIsEmptyException ex) {
+        ApiError apiError = ApiError
+                .builder()
+                .timestamp(LocalDateTime.now())
+                .code(HttpStatus.BAD_REQUEST.value())
+                .status(HttpStatus.BAD_REQUEST.name())
+                .errors(List.of(ex.getMessage()))
+                .build();
+        return new ResponseEntity<>(apiError, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(UserNotFoundException.class)
@@ -79,8 +96,8 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(apiError, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(PhoneExistException.class)
-    public ResponseEntity<ApiError> phoneExistException(PhoneExistException ex){
+    @ExceptionHandler(NameExistException.class)
+    public ResponseEntity<ApiError> nameExistException(NameExistException ex) {
         ApiError apiError = ApiError
                 .builder()
                 .timestamp(LocalDateTime.now())
@@ -91,8 +108,56 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(apiError, HttpStatus.CONFLICT);
     }
 
+    @ExceptionHandler(EmailExistException.class)
+    public ResponseEntity<ApiError> emailExistException(EmailExistException ex) {
+        ApiError apiError = ApiError
+                .builder()
+                .timestamp(LocalDateTime.now())
+                .code(HttpStatus.CONFLICT.value())
+                .status(HttpStatus.CONFLICT.name())
+                .errors(List.of(ex.getMessage()))
+                .build();
+        return new ResponseEntity<>(apiError, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(PhoneExistException.class)
+    public ResponseEntity<ApiError> phoneExistException(PhoneExistException ex) {
+        ApiError apiError = ApiError
+                .builder()
+                .timestamp(LocalDateTime.now())
+                .code(HttpStatus.CONFLICT.value())
+                .status(HttpStatus.CONFLICT.name())
+                .errors(List.of(ex.getMessage()))
+                .build();
+        return new ResponseEntity<>(apiError, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(NameIsEmptyException.class)
+    public ResponseEntity<ApiError> nameValueNullOrEmpty(NameIsEmptyException ex) {
+        ApiError apiError = ApiError
+                .builder()
+                .timestamp(LocalDateTime.now())
+                .code(HttpStatus.BAD_REQUEST.value())
+                .status(HttpStatus.BAD_REQUEST.name())
+                .errors(List.of(ex.getMessage()))
+                .build();
+        return new ResponseEntity<>(apiError, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(PhoneIsEmptyException.class)
+    public ResponseEntity<ApiError> phoneValueNullOrEmpty(PhoneIsEmptyException ex) {
+        ApiError apiError = ApiError
+                .builder()
+                .timestamp(LocalDateTime.now())
+                .code(HttpStatus.BAD_REQUEST.value())
+                .status(HttpStatus.BAD_REQUEST.name())
+                .errors(List.of(ex.getMessage()))
+                .build();
+        return new ResponseEntity<>(apiError, HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler({InvalidEmailException.class, InvalidFormatPhoneException.class})
-    public ResponseEntity<ApiError> argumentNotValidException(RuntimeException ex){
+    public ResponseEntity<ApiError> argumentNotValidException(RuntimeException ex) {
         ApiError apiError = ApiError
                 .builder()
                 .timestamp(LocalDateTime.now())
