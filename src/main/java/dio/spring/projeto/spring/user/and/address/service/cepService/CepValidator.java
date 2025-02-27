@@ -26,6 +26,7 @@ public class CepValidator {
 
     public void cepIsValid(String cep){
         if (this.cepIsEmpty(cep)) throw new CepIsEmptyException();
+        if (this.cepIsBlank(cep)) throw new CepIsEmptyException();
         if (!this.checagemDeNumerosDoCep(cep)) throw new InvalidNumberCepException();
     }
 
@@ -35,5 +36,9 @@ public class CepValidator {
 
     public boolean cepIsEmpty(String cep){
         return cep.isEmpty();
+    }
+
+    public boolean cepIsBlank(String cep){
+        return cep.isBlank();
     }
 }
