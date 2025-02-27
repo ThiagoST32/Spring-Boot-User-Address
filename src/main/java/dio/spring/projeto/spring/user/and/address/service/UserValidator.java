@@ -1,6 +1,8 @@
 package dio.spring.projeto.spring.user.and.address.service;
 
+import dio.spring.projeto.spring.user.and.address.domain.User;
 import dio.spring.projeto.spring.user.and.address.dto.UserDTO;
+import dio.spring.projeto.spring.user.and.address.exceptions.emptyOrBlankValues.EmailIsEmptyException;
 import dio.spring.projeto.spring.user.and.address.exceptions.exist.EmailExistException;
 import dio.spring.projeto.spring.user.and.address.exceptions.exist.NameExistException;
 import dio.spring.projeto.spring.user.and.address.exceptions.exist.PhoneExistException;
@@ -47,6 +49,12 @@ public class UserValidator {
 
     private boolean isEmptyPhone(UserDTO userDTO) { return userDTO.telefone().isEmpty();}
 
+    private boolean isNameBlank(UserDTO userDTO) { return  userDTO.nome().isBlank();}
+
+    private boolean isEmailBlank(UserDTO userDTO) { return  userDTO.email().isBlank();}
+
+    private boolean isPhoneBlank(UserDTO userDTO) { return userDTO.telefone().isBlank();}
+
     public void validadorUsuarioInfo(UserDTO userDTO) {
         if (!this.emailInvalido(userDTO)) throw new InvalidEmailException();
         if (!this.telefoneInvalido(userDTO)) throw new InvalidFormatPhoneException();
@@ -57,6 +65,10 @@ public class UserValidator {
 
         if (this.isEmptyName(userDTO)) throw new NameIsEmptyException();
         if (this.isEmptyPhone(userDTO)) throw new PhoneIsEmptyException();
+
+        if (this.isNameBlank(userDTO)) throw new NameIsEmptyException();
+        if (this.isEmailBlank(userDTO)) throw new EmailIsEmptyException();
+        if (this.isPhoneBlank(userDTO)) throw new PhoneIsEmptyException();
 
     }
 }

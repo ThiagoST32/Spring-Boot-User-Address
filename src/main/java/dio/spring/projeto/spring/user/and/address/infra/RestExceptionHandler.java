@@ -1,6 +1,7 @@
 package dio.spring.projeto.spring.user.and.address.infra;
 
 import dio.spring.projeto.spring.user.and.address.exceptions.emptyOrBlankValues.CepIsEmptyException;
+import dio.spring.projeto.spring.user.and.address.exceptions.emptyOrBlankValues.EmailIsEmptyException;
 import dio.spring.projeto.spring.user.and.address.exceptions.exist.NameExistException;
 import dio.spring.projeto.spring.user.and.address.exceptions.exist.PhoneExistException;
 import dio.spring.projeto.spring.user.and.address.exceptions.invalidFormat.InvalidAddressCepException;
@@ -136,6 +137,17 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<ApiError> nameValueNullOrEmpty(NameIsEmptyException ex) {
         ApiError apiError = ApiError
                 .builder()
+                .timestamp(LocalDateTime.now())
+                .code(HttpStatus.BAD_REQUEST.value())
+                .status(HttpStatus.BAD_REQUEST.name())
+                .errors(List.of(ex.getMessage()))
+                .build();
+        return new ResponseEntity<>(apiError, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(EmailIsEmptyException.class)
+    public ResponseEntity<ApiError> emailValueNullOrBlank(EmailIsEmptyException ex){
+        ApiError apiError = ApiError.builder()
                 .timestamp(LocalDateTime.now())
                 .code(HttpStatus.BAD_REQUEST.value())
                 .status(HttpStatus.BAD_REQUEST.name())
