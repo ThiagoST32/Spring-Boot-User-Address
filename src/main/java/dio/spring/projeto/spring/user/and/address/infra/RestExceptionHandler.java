@@ -102,11 +102,11 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         ApiError apiError = ApiError
                 .builder()
                 .timestamp(LocalDateTime.now())
-                .code(HttpStatus.CONFLICT.value())
-                .status(HttpStatus.CONFLICT.name())
+                .code(HttpStatus.BAD_REQUEST.value())
+                .status(HttpStatus.BAD_REQUEST.name())
                 .errors(List.of(ex.getMessage()))
                 .build();
-        return new ResponseEntity<>(apiError, HttpStatus.CONFLICT);
+        return new ResponseEntity<>(apiError, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(EmailExistException.class)
@@ -114,11 +114,11 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         ApiError apiError = ApiError
                 .builder()
                 .timestamp(LocalDateTime.now())
-                .code(HttpStatus.CONFLICT.value())
-                .status(HttpStatus.CONFLICT.name())
+                .code(HttpStatus.BAD_REQUEST.value())
+                .status(HttpStatus.BAD_REQUEST.name())
                 .errors(List.of(ex.getMessage()))
                 .build();
-        return new ResponseEntity<>(apiError, HttpStatus.CONFLICT);
+        return new ResponseEntity<>(apiError, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(PhoneExistException.class)
@@ -126,11 +126,11 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         ApiError apiError = ApiError
                 .builder()
                 .timestamp(LocalDateTime.now())
-                .code(HttpStatus.CONFLICT.value())
-                .status(HttpStatus.CONFLICT.name())
+                .code(HttpStatus.BAD_REQUEST.value())
+                .status(HttpStatus.BAD_REQUEST.name())
                 .errors(List.of(ex.getMessage()))
                 .build();
-        return new ResponseEntity<>(apiError, HttpStatus.CONFLICT);
+        return new ResponseEntity<>(apiError, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(NameIsEmptyException.class)

@@ -47,6 +47,8 @@ public class UserValidator {
 
     private boolean isEmptyName(UserDTO userDTO) { return userDTO.nome().isEmpty();}
 
+    private boolean isEmptyEmail(UserDTO userDTO) { return userDTO.email().isEmpty();}
+
     private boolean isEmptyPhone(UserDTO userDTO) { return userDTO.telefone().isEmpty();}
 
     private boolean isNameBlank(UserDTO userDTO) { return  userDTO.nome().isBlank();}
@@ -55,20 +57,26 @@ public class UserValidator {
 
     private boolean isPhoneBlank(UserDTO userDTO) { return userDTO.telefone().isBlank();}
 
-    public void validadorUsuarioInfo(UserDTO userDTO) {
-        if (!this.emailInvalido(userDTO)) throw new InvalidEmailException();
-        if (!this.telefoneInvalido(userDTO)) throw new InvalidFormatPhoneException();
+    private boolean numberPhoneMoreThan11(UserDTO userDTO) { return userDTO.telefone().length() > 11;}
 
-        if (this.nameExist(userDTO)) throw new NameExistException();
-        if (this.emailExistente(userDTO)) throw new EmailExistException();
-        if (this.phoneExist(userDTO)) throw new PhoneExistException();
+    public void validadorUsuarioInfo(UserDTO userDTO) {
 
         if (this.isEmptyName(userDTO)) throw new NameIsEmptyException();
+        if (this.isEmptyEmail(userDTO)) throw new EmailIsEmptyException();
         if (this.isEmptyPhone(userDTO)) throw new PhoneIsEmptyException();
 
         if (this.isNameBlank(userDTO)) throw new NameIsEmptyException();
         if (this.isEmailBlank(userDTO)) throw new EmailIsEmptyException();
         if (this.isPhoneBlank(userDTO)) throw new PhoneIsEmptyException();
+
+        if (this.nameExist(userDTO)) throw new NameExistException();
+        if (this.emailExistente(userDTO)) throw new EmailExistException();
+        if (this.phoneExist(userDTO)) throw new PhoneExistException();
+
+        if (this.numberPhoneMoreThan11(userDTO)) throw new InvalidFormatPhoneException();
+
+        if (!this.emailInvalido(userDTO)) throw new InvalidEmailException();
+        if (!this.telefoneInvalido(userDTO)) throw new InvalidFormatPhoneException();
 
     }
 }
