@@ -4,6 +4,6 @@ import javax.naming.Name;
 
 public class NameExistException extends RuntimeException{
     public NameExistException(){
-        super("Este nome de usuario já existe!");
+        super("This name already exists!");
     }
 }

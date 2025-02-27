@@ -1,6 +1,4 @@
 package dio.spring.projeto.spring.user.and.address.dto;
 
-import dio.spring.projeto.spring.user.and.address.domain.Address;
-
-public record UserDTO(String nome, String sobrenome, String email, String telefone, String cep, int numero) {
+public record UserDTO(String firstName, String lastName, String email, String phone, String cep, int number) {
 }

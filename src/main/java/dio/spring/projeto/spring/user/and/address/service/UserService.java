@@ -5,10 +5,6 @@ import dio.spring.projeto.spring.user.and.address.domain.Address;
 import dio.spring.projeto.spring.user.and.address.domain.User;
 import dio.spring.projeto.spring.user.and.address.dto.UserDTO;
 import dio.spring.projeto.spring.user.and.address.dto.updateDTO.UpdateUserDTO;
-import dio.spring.projeto.spring.user.and.address.exceptions.exist.EmailExistException;
-import dio.spring.projeto.spring.user.and.address.exceptions.exist.NameExistException;
-import dio.spring.projeto.spring.user.and.address.exceptions.exist.PhoneExistException;
-import dio.spring.projeto.spring.user.and.address.exceptions.notfound.CepNotFoundException;
 import dio.spring.projeto.spring.user.and.address.exceptions.invalidFormat.InvalidEmailException;
 import dio.spring.projeto.spring.user.and.address.exceptions.invalidFormat.InvalidFormatPhoneException;
 import dio.spring.projeto.spring.user.and.address.exceptions.notfound.UserNotFoundException;
@@ -21,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.regex.Pattern;
 
 @Service
 public class UserService {
@@ -40,16 +35,15 @@ public class UserService {
 
 
     public User saveUser(UserDTO userDTO) throws JsonProcessingException {
-        User newUser = null;
+        User newUser = new User(userDTO, getAddressByCep(userDTO));
         this.userValidator.validadorUsuarioInfo(userDTO);
-        newUser = new User(userDTO, getAddressByCep(userDTO));
         this.userRepository.save(newUser);
         return newUser;
     }
 
     public Address getAddressByCep(UserDTO userDTO) throws JsonProcessingException {
         Address address = this.cepService.buscarEnderecoPorCep(userDTO.cep());
-        address.setNumero(userDTO.numero());
+        address.setNumero(userDTO.number());
         return address;
     }
 
@@ -65,12 +59,11 @@ public class UserService {
     public Optional<User> updateUserInfo(int id, UpdateUserDTO updateUserDTO) throws JsonProcessingException, InvalidEmailException, InvalidFormatPhoneException {
         User updatedUser = this.getUserById(id);
         if (id == updatedUser.getId()) {
-            System.err.println(updateUserDTO);
-            updatedUser.setNome(updateUserDTO.nome());
-            updatedUser.setSobrenome(updateUserDTO.sobrenome());
+            updatedUser.setFirstName(updateUserDTO.firstName());
+            updatedUser.setLastName(updateUserDTO.lastName());
             updatedUser.setEmail(updateUserDTO.email());
-            updatedUser.setTelefone(updateUserDTO.telefone());
-            this.updateAddressUser(updatedUser, id, updateUserDTO.cep(), updateUserDTO.numero());
+            updatedUser.setPhone(updateUserDTO.phone());
+            this.updateAddressUser(updatedUser, id, updateUserDTO.cep(), updateUserDTO.number());
             this.userRepository.save(updatedUser);
         }
         return Optional.of(updatedUser);
@@ -95,7 +88,5 @@ public class UserService {
     public void deleteUserById(int id) throws UserNotFoundException{
         this.userRepository.deleteById(id);
     }
-
-
 
 }

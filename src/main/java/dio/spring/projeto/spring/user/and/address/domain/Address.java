@@ -1,11 +1,15 @@
 package dio.spring.projeto.spring.user.and.address.domain;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
 @Entity(name = "address")
 @Table(name = "address")
+@Setter
+@Getter
 public class Address {
 
     @Id
@@ -15,7 +19,7 @@ public class Address {
     @Column(name = "rua", nullable = false)
     private String logradouro;
 
-    @Column(name = "numero", nullable = false)
+    @Column(name = "number", nullable = false)
     private int numero;
 
     @Column(name = "bairro", nullable = false)
@@ -47,75 +51,5 @@ public class Address {
     }
 
     public Address(String cep) {
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getLogradouro() {
-        return logradouro;
-    }
-
-    public void setLogradouro(String logradouro) {
-        this.logradouro = logradouro;
-    }
-
-    public int getNumero() {
-        return numero;
-    }
-
-    public void setNumero(int numero) {
-        this.numero = numero;
-    }
-
-    public String getBairro() {
-        return bairro;
-    }
-
-    public void setBairro(String bairro) {
-        this.bairro = bairro;
-    }
-
-    public String getCep() {
-        return cep;
-    }
-
-    public void setCep(String cep) {
-        this.cep = cep;
-    }
-
-    public String getLocalidade() {
-        return localidade;
-    }
-
-    public void setLocalidade(String localidade) {
-        this.localidade = localidade;
-    }
-
-    public String getUf() {
-        return uf;
-    }
-
-    public void setUf(String uf) {
-        this.uf = uf;
-    }
-
-    @Override
-    public String toString() {
-        return "Address{" +
-                "id=" + id +
-                ", rua='" + logradouro + '\'' +
-                ", numero=" + numero +
-                ", bairro='" + bairro + '\'' +
-                ", cep='" + cep + '\'' +
-                ", cidade='" + localidade + '\'' +
-                ", estado='" + uf + '\'' +
-                ", users=" + users +
-                '}';
     }
 }

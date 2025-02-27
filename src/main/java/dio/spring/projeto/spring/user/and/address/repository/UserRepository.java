@@ -16,11 +16,11 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     Boolean existByEmail(@Param("email") String email);
 
     @Query(value = """
-    SELECT CASE WHEN COUNT(telefone) > 0 THEN TRUE ELSE FALSE END
+    SELECT CASE WHEN COUNT(phone) > 0 THEN TRUE ELSE FALSE END
     FROM "TAB_USER"
-    WHERE TELEFONE = :telefone
+    WHERE TELEFONE = :phone
     """ , nativeQuery = true)
-    Boolean existByTelefone(@Param("telefone") String telefone);
+    Boolean existByTelefone(@Param("phone") String telefone);
 
     @Query(value = """
             SELECT CASE WHEN COUNT(nome) > 0 THEN TRUE ELSE FALSE END
