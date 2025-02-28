@@ -35,8 +35,8 @@ public class UserService {
 
 
     public User saveUser(UserDTO userDTO) throws JsonProcessingException {
-        User newUser = new User(userDTO, getAddressByCep(userDTO));
         this.userValidator.validadorUsuarioInfo(userDTO);
+        User newUser = new User(userDTO, getAddressByCep(userDTO));
         this.userRepository.save(newUser);
         return newUser;
     }
@@ -56,7 +56,7 @@ public class UserService {
     }
 
     @Transactional
-    public Optional<User> updateUserInfo(int id, UpdateUserDTO updateUserDTO) throws JsonProcessingException, InvalidEmailException, InvalidFormatPhoneException {
+    public Optional<User> updateUserInfo(int id, UpdateUserDTO updateUserDTO) throws JsonProcessingException {
         User updatedUser = this.getUserById(id);
         if (id == updatedUser.getId()) {
             updatedUser.setFirstName(updateUserDTO.firstName());

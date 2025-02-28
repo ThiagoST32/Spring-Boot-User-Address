@@ -41,7 +41,7 @@ public class CepService {
 
         if (this.cepValidator.checagemEnderecoCep(jsonResponse)) throw new InvalidAddressCepException();
 
-        if (jsonResponse.getStatusCode() == HttpStatus.OK) {
+        if (jsonResponse.getStatusCode() == HttpStatus.OK && !jsonResponse.getBody().contains("\"erro\": true")) {
             return objectMapper.readValue(jsonResponse.getBody(), Address.class);
         } else {
             throw new CepNotFoundException();

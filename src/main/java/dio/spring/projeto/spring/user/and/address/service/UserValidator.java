@@ -23,13 +23,13 @@ public class UserValidator {
 
 
     private boolean invalidEmail(UserDTO userDTO){
-        String validador = "^(.+)@(\\S+)$";
-        return Pattern.compile(validador).matcher(userDTO.email()).matches();
+        String validator = "^(.+)@(\\S+)$";
+        return Pattern.compile(validator).matcher(userDTO.email()).matches();
     }
 
     private boolean invalidPhone(UserDTO userDTO){
-        String validador = "^(?=[8-9])(?=[0-9]{8}).*";
-        return Pattern.compile(validador).matcher(userDTO.phone()).matches();
+        String validator = "^(?=[8-9])(?=[0-9]{8}).*";
+        return Pattern.compile(validator).matcher(userDTO.phone()).matches();
     }
 
 

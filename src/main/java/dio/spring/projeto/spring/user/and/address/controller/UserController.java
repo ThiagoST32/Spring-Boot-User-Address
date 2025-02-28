@@ -1,6 +1,7 @@
 package dio.spring.projeto.spring.user.and.address.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import dio.spring.projeto.spring.user.and.address.domain.Address;
 import dio.spring.projeto.spring.user.and.address.domain.User;
 import dio.spring.projeto.spring.user.and.address.dto.UserDTO;
 import dio.spring.projeto.spring.user.and.address.dto.updateDTO.UpdateUserDTO;
@@ -45,8 +46,8 @@ public class UserController {
     }
 
     @GetMapping("/checkCep/{cep}")
-    public ResponseEntity<String>checkCepUser(@PathVariable("cep") String cep) throws JsonProcessingException {
-        String address = String.valueOf((this.cepService.buscarEnderecoPorCep(cep)));
+    public ResponseEntity<Address>checkCepUser(@PathVariable("cep") String cep) throws JsonProcessingException {
+        Address address = this.cepService.buscarEnderecoPorCep(cep);
         return new ResponseEntity<>(address, HttpStatus.ACCEPTED);
     }
 

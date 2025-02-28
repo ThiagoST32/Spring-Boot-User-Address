@@ -18,14 +18,14 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Query(value = """
     SELECT CASE WHEN COUNT(phone) > 0 THEN TRUE ELSE FALSE END
     FROM "TAB_USER"
-    WHERE TELEFONE = :phone
+    WHERE PHONE = :phone
     """ , nativeQuery = true)
     Boolean existByTelefone(@Param("phone") String telefone);
 
     @Query(value = """
-            SELECT CASE WHEN COUNT(nome) > 0 THEN TRUE ELSE FALSE END
+            SELECT CASE WHEN COUNT(first_name) > 0 THEN TRUE ELSE FALSE END
             FROM "TAB_USER"
-            WHERE NOME = :name
+            WHERE FIRST_NAME = :name
             """, nativeQuery = true)
-    Boolean existByNome(String name);
+    Boolean existByNome(@Param("name") String name);
 }
