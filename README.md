@@ -6,3 +6,5 @@ Projeto feito com a intenção de se ter uma API que irá criar um usuario junta
  - H2 Database
  - Spring Web
  - OpenFeign
+ - Jackson Databind
+ - Validation
