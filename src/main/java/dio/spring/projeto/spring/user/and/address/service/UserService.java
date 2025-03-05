@@ -84,8 +84,13 @@ public class UserService {
     }
 
     @Transactional
-    public void deleteUserById(int id) throws UserNotFoundException{
-        this.userRepository.deleteById(id);
+    public void deleteUserById(int id){
+        System.err.println(this.userRepository.existById(id));
+        if (this.userRepository.existById(id)){
+            this.userRepository.deleteById(id);
+        } else {
+            throw new UserNotFoundException();
+        }
     }
 
 }

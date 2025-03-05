@@ -28,4 +28,11 @@ public interface UserRepository extends JpaRepository<User, Integer> {
             WHERE FIRST_NAME = :name
             """, nativeQuery = true)
     Boolean existByNome(@Param("name") String name);
+
+    @Query(value = """
+            SELECT CASE WHEN COUNT(id) > 0 THEN TRUE ELSE FALSE END
+            FROM "TAB_USER"
+            WHERE ID = :id
+            """, nativeQuery = true)
+    Boolean existById(@Param("id") int id);
 }

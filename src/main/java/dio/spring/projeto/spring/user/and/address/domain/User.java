@@ -24,7 +24,7 @@ public class User {
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
-    @Column(name = "phone", nullable = false, length = 11, unique = true)
+    @Column(name = "phone", nullable = false, length = 8, unique = true)
     private String phone;
 
     @ManyToOne(cascade = CascadeType.ALL, optional = false)

@@ -65,7 +65,7 @@ public class UserValidator {
 
     private boolean isPhoneBlank(UserDTO userDTO) { return userDTO.phone().isBlank();}
 
-    private boolean numberPhoneMoreThan11(UserDTO userDTO) { return userDTO.phone().length() > 11;}
+    private boolean numberPhoneMoreThan8(UserDTO userDTO) { return userDTO.phone().length() > 8;}
 
     public void validadorUsuarioInfo(UserDTO userDTO) {
 
@@ -81,22 +81,12 @@ public class UserValidator {
         if (this.existEmail(userDTO)) throw new EmailExistException();
         if (this.phoneExist(userDTO)) throw new PhoneExistException();
 
-        if (this.numberPhoneMoreThan11(userDTO)) throw new InvalidFormatPhoneException();
+        if (this.numberPhoneMoreThan8(userDTO)) throw new InvalidFormatPhoneException();
 
         if (!this.invalidEmail(userDTO)) throw new InvalidEmailException();
         if (!this.invalidPhone(userDTO)) throw new InvalidFormatPhoneException();
 
     }
-
-    private boolean nameExistUpdate(UpdateUserDTO updateUserDTO) {
-        return this.userRepository.existByNome(updateUserDTO.firstName());
-    }
-
-    private boolean existEmailUpdate(UpdateUserDTO updateUserDTO){
-        return this.userRepository.existByEmail(updateUserDTO.email());
-    }
-
-    private boolean phoneExistUpdate(UpdateUserDTO updateUserDTO){ return this.userRepository.existByTelefone(updateUserDTO.phone());}
 
     private boolean isEmptyNameUpdate(UpdateUserDTO updateUserDTO) { return updateUserDTO.firstName().isEmpty();}
 
@@ -110,7 +100,7 @@ public class UserValidator {
 
     private boolean isPhoneBlankUpdate(UpdateUserDTO updateUserDTO) { return updateUserDTO.phone().isBlank();}
 
-    private boolean numberPhoneMoreThan11Update(UpdateUserDTO updateUserDTO) { return updateUserDTO.phone().length() > 11;}
+    private boolean numberPhoneMoreThan8Update(UpdateUserDTO updateUserDTO) { return updateUserDTO.phone().length() > 8;}
 
     public void validadorUsuarioInfoUpdate(UpdateUserDTO updateUserDTO) {
 
@@ -122,11 +112,7 @@ public class UserValidator {
         if (this.isEmailBlankUpdate(updateUserDTO)) throw new EmailIsEmptyException();
         if (this.isPhoneBlankUpdate(updateUserDTO)) throw new PhoneIsEmptyException();
 
-        if (this.nameExistUpdate(updateUserDTO)) throw new NameExistException();
-        if (this.existEmailUpdate(updateUserDTO)) throw new EmailExistException();
-        if (this.phoneExistUpdate(updateUserDTO)) throw new PhoneExistException();
-
-        if (this.numberPhoneMoreThan11Update(updateUserDTO)) throw new InvalidFormatPhoneException();
+        if (this.numberPhoneMoreThan8Update(updateUserDTO)) throw new InvalidFormatPhoneException();
 
         if (!this.invalidEmailUpdate(updateUserDTO)) throw new InvalidEmailException();
         if (!this.invalidPhoneUpdate(updateUserDTO)) throw new InvalidFormatPhoneException();
