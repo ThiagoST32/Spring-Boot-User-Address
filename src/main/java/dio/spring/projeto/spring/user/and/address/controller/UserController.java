@@ -54,7 +54,6 @@ public class UserController {
     @PutMapping("{id}")
     public ResponseEntity<User> updateUserById(@PathVariable int id, @RequestBody UpdateUserDTO updateUserDTO) throws JsonProcessingException {
         Optional<User> updatedUser = this.userService.updateUserInfo(id, updateUserDTO);
-        System.err.println(updateUserDTO);
         return new ResponseEntity(updatedUser, HttpStatus.ACCEPTED);
     }
 

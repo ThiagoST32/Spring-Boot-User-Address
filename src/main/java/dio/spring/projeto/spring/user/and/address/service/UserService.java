@@ -56,7 +56,7 @@ public class UserService {
     @Transactional
     public Optional<User> updateUserInfo(int id, UpdateUserDTO updateUserDTO) throws JsonProcessingException {
         User updatedUser = this.getUserById(id);
-        this.userValidator(updateUserDTO);
+        this.userValidator.validadorUsuarioInfoUpdate(updateUserDTO);
         if (id == updatedUser.getId()) {
             updatedUser.setFirstName(updateUserDTO.firstName());
             updatedUser.setLastName(updateUserDTO.lastName());
