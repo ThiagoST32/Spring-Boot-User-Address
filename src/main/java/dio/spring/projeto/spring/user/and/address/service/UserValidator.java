@@ -1,6 +1,7 @@
 package dio.spring.projeto.spring.user.and.address.service;
 
 import dio.spring.projeto.spring.user.and.address.dto.UserDTO;
+import dio.spring.projeto.spring.user.and.address.dto.updateDTO.UpdateUserDTO;
 import dio.spring.projeto.spring.user.and.address.exceptions.emptyOrBlankValues.EmailIsEmptyException;
 import dio.spring.projeto.spring.user.and.address.exceptions.exist.EmailExistException;
 import dio.spring.projeto.spring.user.and.address.exceptions.exist.NameExistException;
@@ -32,6 +33,15 @@ public class UserValidator {
         return Pattern.compile(validator).matcher(userDTO.phone()).matches();
     }
 
+    private boolean invalidEmailUpdate(UpdateUserDTO updateUserDTO){
+        String validator = "^(.+)@(\\S+)$";
+        return Pattern.compile(validator).matcher(updateUserDTO.email()).matches();
+    }
+
+    private boolean invalidPhoneUpdate(UpdateUserDTO updateUserDTO){
+        String validator = "^(?=[8-9])(?=[0-9]{8}).*";
+        return Pattern.compile(validator).matcher(updateUserDTO.phone()).matches();
+    }
 
     private boolean nameExist(UserDTO userDTO) {
         return this.userRepository.existByNome(userDTO.firstName());
@@ -75,6 +85,51 @@ public class UserValidator {
 
         if (!this.invalidEmail(userDTO)) throw new InvalidEmailException();
         if (!this.invalidPhone(userDTO)) throw new InvalidFormatPhoneException();
+
+    }
+
+    private boolean nameExistUpdate(UpdateUserDTO updateUserDTO) {
+        return this.userRepository.existByNome(updateUserDTO.firstName());
+    }
+
+    private boolean existEmailUpdate(UpdateUserDTO updateUserDTO){
+        return this.userRepository.existByEmail(updateUserDTO.email());
+    }
+
+    private boolean phoneExistUpdate(UpdateUserDTO updateUserDTO){ return this.userRepository.existByTelefone(updateUserDTO.phone());}
+
+    private boolean isEmptyNameUpdate(UpdateUserDTO updateUserDTO) { return updateUserDTO.firstName().isEmpty();}
+
+    private boolean isEmptyEmailUpdate(UpdateUserDTO updateUserDTO) { return updateUserDTO.email().isEmpty();}
+
+    private boolean isEmptyPhoneUpdate(UpdateUserDTO updateUserDTO) { return updateUserDTO.phone().isEmpty();}
+
+    private boolean isNameBlankUpdate(UpdateUserDTO updateUserDTO) { return  updateUserDTO.firstName().isBlank();}
+
+    private boolean isEmailBlankUpdate(UpdateUserDTO updateUserDTO) { return  updateUserDTO.email().isBlank();}
+
+    private boolean isPhoneBlankUpdate(UpdateUserDTO updateUserDTO) { return updateUserDTO.phone().isBlank();}
+
+    private boolean numberPhoneMoreThan11Update(UpdateUserDTO updateUserDTO) { return updateUserDTO.phone().length() > 11;}
+
+    public void validadorUsuarioInfoUpdate(UpdateUserDTO updateUserDTO) {
+
+        if (this.isEmptyNameUpdate(updateUserDTO)) throw new NameIsEmptyException();
+        if (this.isEmptyEmailUpdate(updateUserDTO)) throw new EmailIsEmptyException();
+        if (this.isEmptyPhoneUpdate(updateUserDTO)) throw new PhoneIsEmptyException();
+
+        if (this.isNameBlankUpdate(updateUserDTO)) throw new NameIsEmptyException();
+        if (this.isEmailBlankUpdate(updateUserDTO)) throw new EmailIsEmptyException();
+        if (this.isPhoneBlankUpdate(updateUserDTO)) throw new PhoneIsEmptyException();
+
+        if (this.nameExistUpdate(updateUserDTO)) throw new NameExistException();
+        if (this.existEmailUpdate(updateUserDTO)) throw new EmailExistException();
+        if (this.phoneExistUpdate(updateUserDTO)) throw new PhoneExistException();
+
+        if (this.numberPhoneMoreThan11Update(updateUserDTO)) throw new InvalidFormatPhoneException();
+
+        if (!this.invalidEmailUpdate(updateUserDTO)) throw new InvalidEmailException();
+        if (!this.invalidPhoneUpdate(updateUserDTO)) throw new InvalidFormatPhoneException();
 
     }
 }

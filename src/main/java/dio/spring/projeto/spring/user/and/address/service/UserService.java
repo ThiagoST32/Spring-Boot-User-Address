@@ -5,8 +5,6 @@ import dio.spring.projeto.spring.user.and.address.domain.Address;
 import dio.spring.projeto.spring.user.and.address.domain.User;
 import dio.spring.projeto.spring.user.and.address.dto.UserDTO;
 import dio.spring.projeto.spring.user.and.address.dto.updateDTO.UpdateUserDTO;
-import dio.spring.projeto.spring.user.and.address.exceptions.invalidFormat.InvalidEmailException;
-import dio.spring.projeto.spring.user.and.address.exceptions.invalidFormat.InvalidFormatPhoneException;
 import dio.spring.projeto.spring.user.and.address.exceptions.notfound.UserNotFoundException;
 import dio.spring.projeto.spring.user.and.address.repository.AddressRepository;
 import dio.spring.projeto.spring.user.and.address.repository.UserRepository;
@@ -58,6 +56,7 @@ public class UserService {
     @Transactional
     public Optional<User> updateUserInfo(int id, UpdateUserDTO updateUserDTO) throws JsonProcessingException {
         User updatedUser = this.getUserById(id);
+        this.userValidator(updateUserDTO);
         if (id == updatedUser.getId()) {
             updatedUser.setFirstName(updateUserDTO.firstName());
             updatedUser.setLastName(updateUserDTO.lastName());
